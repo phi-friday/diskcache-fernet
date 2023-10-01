@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["phi <phi.friday@gmail.com>"]
 readme = "README.md"
-license = "Apache 2.0 License"
+license = "Apache-2.0"
 repository = "https://github.com/phi-friday/diskcache-fernet"
 packages = [{ include = "diskcache_fernet", from = "src" }]
 
