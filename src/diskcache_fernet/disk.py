@@ -129,6 +129,7 @@ class FernetDisk(Disk):  # noqa: D101
     def _decrypt(self, value: bytes) -> bytes:
         return self._fernet.decrypt(value)
 
+    @property
     def _token(self) -> SecretValue[bytes]:
         return SecretValue(
             self._fernet._signing_key + self._fernet._encryption_key,  # noqa: SLF001

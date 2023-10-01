@@ -4,6 +4,8 @@ version = "0.1.0"
 description = ""
 authors = ["phi <phi.friday@gmail.com>"]
 readme = "README.md"
+license = "Apache 2.0 License"
+repository = "https://github.com/phi-friday/diskcache-fernet"
 packages = [{ include = "diskcache_fernet", from = "src" }]
 
 [tool.poetry.dependencies]
@@ -15,6 +17,8 @@ typing-extensions = "4.8.0"
 [tool.poetry.group.dev.dependencies]
 ruff = "0.0.291"
 black = "23.9.1"
+pytest = "^7.4.2"
+pre-commit = "^3.4.0"
 
 [tool.ruff]
 line-length = 88
@@ -85,6 +89,27 @@ ignore = [
     "FIX",    # flake8-fixme
 ]
 
+[tool.ruff.per-file-ignores]
+"./tests/**/*.py" = [
+    "TCH001",
+    "TCH002",
+    "TCH003",
+    "S101",
+    "D101",
+    "ANN001",
+    "ANN201",
+    "PLR0133",
+    "W605",
+    "D103",
+    "D102",
+    "PLR2004",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+preview = true
+
 [tool.ruff.pylint]
 max-args = 10
 
@@ -96,7 +121,7 @@ required-imports = ["from __future__ import annotations"]
 pythonVersion = '3.8'
 pythonPlatform = 'Linux'
 diagnostic = 'basic'
-include = ['src']
+include = ['src', 'tests']
 
 [build-system]
 requires = ["poetry-core"]
