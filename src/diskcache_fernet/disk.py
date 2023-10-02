@@ -5,7 +5,7 @@ from functools import cached_property
 from io import BytesIO, FileIO, StringIO
 from pathlib import Path
 from sqlite3 import Binary
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from cryptography.fernet import Fernet
 from diskcache import UNKNOWN, Disk
@@ -52,10 +52,6 @@ class FernetDisk(Disk):  # noqa: D101
     @cached_property
     def _dir(self) -> Path:
         return Path(self._directory).resolve()
-
-    @override
-    def filename(self, key: Any = UNKNOWN, value: Any = UNKNOWN) -> tuple[str, str]:
-        return super().filename(key, value)
 
     @override
     def store(
@@ -139,11 +135,14 @@ class FernetDisk(Disk):  # noqa: D101
     def _decrypt(self, value: bytes) -> bytes:
         return self._fernet.decrypt(value)
 
-    @property
-    def _token(self) -> SecretValue[bytes]:
-        return SecretValue(
-            self._fernet._signing_key + self._fernet._encryption_key,  # noqa: SLF001
-        )
+    if TYPE_CHECKING:
+
+        @override
+        def filename(
+            self,
+            key: Any = UNKNOWN,
+            value: Any = UNKNOWN,
+        ) -> tuple[str, str]: ...
 
 
 FernetDisk.__doc__ = Disk.__doc__
