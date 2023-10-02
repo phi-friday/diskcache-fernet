@@ -5,17 +5,16 @@ from pathlib import Path
 from tempfile import mkdtemp
 from typing import TYPE_CHECKING, Any, Literal, overload
 
-from diskcache import DEFAULT_SETTINGS, Disk
-from diskcache import FanoutCache as _FanoutCache
+from diskcache import DEFAULT_SETTINGS, Disk, FanoutCache
 from typing_extensions import override
 
-from diskcache_fernet.cache import Cache
+from diskcache_fernet.cache import FernetCache
 from diskcache_fernet.disk import FernetDisk
 
-__all__ = ["FanoutCache"]
+__all__ = ["FernetFanoutCache"]
 
 
-class FanoutCache(_FanoutCache):  # noqa: D101
+class FernetFanoutCache(FanoutCache):  # noqa: D101
     @override
     def __init__(
         self,
@@ -40,7 +39,7 @@ class FanoutCache(_FanoutCache):  # noqa: D101
         self._directory = directory
         self._disk = disk
         self._shards = tuple(
-            Cache(
+            FernetCache(
                 directory=_dir / f"{num:03d}",
                 timeout=timeout,
                 disk=disk,
@@ -155,4 +154,4 @@ class FanoutCache(_FanoutCache):  # noqa: D101
         def __getitem__(self, key: Any) -> Any: ...
 
 
-FanoutCache.__doc__ = _FanoutCache.__doc__
+FernetFanoutCache.__doc__ = FanoutCache.__doc__

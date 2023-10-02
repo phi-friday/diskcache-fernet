@@ -7,7 +7,7 @@ from typing import Generator
 import pytest
 from cryptography.fernet import Fernet
 
-from diskcache_fernet import Cache, FanoutCache, FernetDisk, SecretValue
+from diskcache_fernet import FernetCache, FernetDisk, FernetFanoutCache, SecretValue
 
 
 @pytest.fixture()
@@ -22,24 +22,24 @@ def token() -> SecretValue[bytes]:
 
 
 @pytest.fixture()
-def cache(token: SecretValue[bytes], tempdir: Path) -> Cache:
-    return Cache(tempdir, disk_fernet=token)
+def cache(token: SecretValue[bytes], tempdir: Path) -> FernetCache:
+    return FernetCache(tempdir, disk_fernet=token)
 
 
 @pytest.fixture()
-def cache_disk(cache: Cache) -> FernetDisk:
+def cache_disk(cache: FernetCache) -> FernetDisk:
     if not isinstance(cache.disk, FernetDisk):
         raise TypeError("cache disk is not fernet disk")
     return cache.disk
 
 
 @pytest.fixture()
-def fcache(token: SecretValue[bytes], tempdir: Path) -> FanoutCache:
-    return FanoutCache(tempdir, disk_fernet=token)
+def fcache(token: SecretValue[bytes], tempdir: Path) -> FernetFanoutCache:
+    return FernetFanoutCache(tempdir, disk_fernet=token)
 
 
 @pytest.fixture()
-def fcache_disk(fcache: FanoutCache) -> FernetDisk:
+def fcache_disk(fcache: FernetFanoutCache) -> FernetDisk:
     if not isinstance(fcache.disk, FernetDisk):
         raise TypeError("fcache disk is not fernet disk")
     return fcache.disk

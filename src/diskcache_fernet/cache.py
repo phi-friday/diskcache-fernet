@@ -9,18 +9,17 @@ from tempfile import mkdtemp
 from threading import local
 from typing import TYPE_CHECKING, Any, Literal, overload
 
-from diskcache import DEFAULT_SETTINGS, Disk
-from diskcache import Cache as _Cache
+from diskcache import DEFAULT_SETTINGS, Cache, Disk
 from diskcache.core import EVICTION_POLICY, METADATA
 from typing_extensions import override
 
 from diskcache_fernet.disk import FernetDisk
 from diskcache_fernet.secret import SecretValue
 
-__all__ = ["Cache"]
+__all__ = ["FernetCache"]
 
 
-class Cache(_Cache):  # noqa: D101
+class FernetCache(Cache):  # noqa: D101
     @override
     def __init__(
         self,
@@ -289,4 +288,4 @@ class Cache(_Cache):  # noqa: D101
         def __getitem__(self, key: Any) -> Any: ...
 
 
-Cache.__doc__ = _Cache.__doc__
+FernetCache.__doc__ = Cache.__doc__
