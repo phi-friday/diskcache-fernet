@@ -44,6 +44,7 @@ class FernetDisk(Disk):  # noqa: D101
         if isinstance(fernet, SecretValue):
             fernet = Fernet(fernet.get_value())
         elif not isinstance(fernet, Fernet):
+            logger.warning("fernet key is not secret value.")
             fernet = Fernet(fernet)
 
         self._fernet = fernet
