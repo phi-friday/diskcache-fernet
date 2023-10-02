@@ -9,6 +9,7 @@ from tempfile import mkdtemp
 from threading import local
 from typing import TYPE_CHECKING, Any, Literal, overload
 
+from cryptography.fernet import Fernet
 from diskcache import DEFAULT_SETTINGS, Cache, Disk
 from diskcache.core import EVICTION_POLICY, METADATA
 from typing_extensions import override
@@ -96,7 +97,7 @@ class FernetCache(Cache):  # noqa: D101
         # Set cached attributes: updates settings and sets pragmas.
 
         for key, value in sets.items():
-            if isinstance(value, SecretValue):
+            if isinstance(value, (SecretValue, Fernet)):
                 continue
             query = "INSERT OR REPLACE INTO Settings VALUES (?, ?)"
             sql(query, (key, value))
