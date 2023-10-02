@@ -23,7 +23,12 @@ class FernetDisk(Disk):  # noqa: D101
         directory: str | Path,
         min_file_size: int = 0,
         pickle_protocol: int = 0,
-        fernet: SecretValue[str] | SecretValue[bytes] | Fernet | None = None,
+        fernet: str
+        | bytes
+        | SecretValue[str]
+        | SecretValue[bytes]
+        | Fernet
+        | None = None,
     ) -> None:
         if isinstance(directory, Path):
             directory = directory.as_posix()
@@ -35,8 +40,12 @@ class FernetDisk(Disk):  # noqa: D101
                 "A temporary fernet key will be generated.",
             )
             fernet = Fernet(Fernet.generate_key())
-        if not isinstance(fernet, Fernet):
+
+        if isinstance(fernet, SecretValue):
             fernet = Fernet(fernet.get_value())
+        elif not isinstance(fernet, Fernet):
+            fernet = Fernet(fernet)
+
         self._fernet = fernet
 
     @cached_property
