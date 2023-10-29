@@ -64,9 +64,7 @@ class FernetCache(Cache):  # noqa: D101
         # Setup Settings table.
 
         try:
-            current_settings = dict(
-                sql("SELECT key, value FROM Settings").fetchall(),
-            )
+            current_settings = dict(sql("SELECT key, value FROM Settings").fetchall())
         except OperationalError:
             current_settings = {}
 
@@ -83,9 +81,7 @@ class FernetCache(Cache):  # noqa: D101
             if key.startswith("sqlite_"):
                 self.reset(key, value, update=False)
 
-        sql(
-            "CREATE TABLE IF NOT EXISTS Settings ( key TEXT NOT NULL UNIQUE, value)",
-        )
+        sql("CREATE TABLE IF NOT EXISTS Settings ( key TEXT NOT NULL UNIQUE, value)")
 
         # Setup Disk object (must happen after settings initialized).
 
@@ -125,16 +121,12 @@ class FernetCache(Cache):  # noqa: D101
             " size INTEGER DEFAULT 0,"
             " mode INTEGER DEFAULT 0,"
             " filename TEXT,"
-            " value BLOB)",
+            " value BLOB)"
         )
 
-        sql(
-            "CREATE UNIQUE INDEX IF NOT EXISTS Cache_key_raw ON Cache(key, raw)",
-        )
+        sql("CREATE UNIQUE INDEX IF NOT EXISTS Cache_key_raw ON Cache(key, raw)")
 
-        sql(
-            "CREATE INDEX IF NOT EXISTS Cache_expire_time ON Cache (expire_time)",
-        )
+        sql("CREATE INDEX IF NOT EXISTS Cache_expire_time ON Cache (expire_time)")
 
         query = EVICTION_POLICY[self.eviction_policy]["init"]  # type: ignore
 
@@ -147,21 +139,21 @@ class FernetCache(Cache):  # noqa: D101
             "CREATE TRIGGER IF NOT EXISTS Settings_count_insert"
             " AFTER INSERT ON Cache FOR EACH ROW BEGIN"
             " UPDATE Settings SET value = value + 1"
-            ' WHERE key = "count"; END',
+            ' WHERE key = "count"; END'
         )
 
         sql(
             "CREATE TRIGGER IF NOT EXISTS Settings_count_delete"
             " AFTER DELETE ON Cache FOR EACH ROW BEGIN"
             " UPDATE Settings SET value = value - 1"
-            ' WHERE key = "count"; END',
+            ' WHERE key = "count"; END'
         )
 
         sql(
             "CREATE TRIGGER IF NOT EXISTS Settings_size_insert"
             " AFTER INSERT ON Cache FOR EACH ROW BEGIN"
             " UPDATE Settings SET value = value + NEW.size"
-            ' WHERE key = "size"; END',
+            ' WHERE key = "size"; END'
         )
 
         sql(
@@ -169,14 +161,14 @@ class FernetCache(Cache):  # noqa: D101
             " AFTER UPDATE ON Cache FOR EACH ROW BEGIN"
             " UPDATE Settings"
             " SET value = value + NEW.size - OLD.size"
-            ' WHERE key = "size"; END',
+            ' WHERE key = "size"; END'
         )
 
         sql(
             "CREATE TRIGGER IF NOT EXISTS Settings_size_delete"
             " AFTER DELETE ON Cache FOR EACH ROW BEGIN"
             " UPDATE Settings SET value = value - OLD.size"
-            ' WHERE key = "size"; END',
+            ' WHERE key = "size"; END'
         )
 
         # Create tag index if requested.

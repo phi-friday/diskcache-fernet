@@ -30,8 +30,7 @@ def test_set_and_get_fanout(fcache: FanoutCache) -> None:
 
 
 def test_set_and_get_decrypt_fanout(
-    fcache: FanoutCache,
-    fcache_disk: FernetDisk,
+    fcache: FanoutCache, fcache_disk: FernetDisk
 ) -> None:
     fcache.set("key", b"value")
     new_cache = FanoutCache(fcache.directory)
@@ -52,8 +51,7 @@ def test_set_and_get_decrypt_outside(cache: Cache, token: SecretValue[bytes]) ->
 
 
 def test_set_and_get_decrypt_outside_fanout(
-    fcache: FanoutCache,
-    token: SecretValue[bytes],
+    fcache: FanoutCache, token: SecretValue[bytes]
 ) -> None:
     fcache.set("key", b"value")
     fernet = Fernet(token.get_value())

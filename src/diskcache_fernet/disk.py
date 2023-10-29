@@ -37,7 +37,7 @@ class FernetDisk(Disk):  # noqa: D101
         if fernet is None:
             logger.warning(
                 "there is no fernet in settings. "
-                "A temporary fernet key will be generated.",
+                "A temporary fernet key will be generated."
             )
             fernet = Fernet(Fernet.generate_key())
 
@@ -139,9 +139,7 @@ class FernetDisk(Disk):  # noqa: D101
 
         @override
         def filename(
-            self,
-            key: Any = UNKNOWN,
-            value: Any = UNKNOWN,
+            self, key: Any = UNKNOWN, value: Any = UNKNOWN
         ) -> tuple[str, str]: ...
 
 
