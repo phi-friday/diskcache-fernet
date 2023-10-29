@@ -34,9 +34,6 @@ fixable = [
     "E713",   # not-in-test
     "E714",   # not-is-test
     "I001",   # unsorted-imports
-    "COM812", # trailing-comma-missing
-    "Q000",   # bad-quotes-inline-string
-    "Q001",   # bad-quotes-multiline-string
     "UP037",  # quoted-annotation
     "W293",   # blank-line-with-whitespace
     "RSE102", # unnecessary-paren-on-raise-exception
